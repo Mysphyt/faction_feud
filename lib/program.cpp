@@ -14,7 +14,7 @@ ProgramState CURR_PROGRAM_STATE;
 void InitProgram() {
     // create the window
 
-    sf::RenderWindow window(sf::VideoMode({WIN_WIDTH, WIN_HEIGHT}), "My window");
+    sf::RenderWindow window(sf::VideoMode({BASE_WIN_WIDTH, BASE_WIN_HEIGHT}), "window");
 
     sf::Font* default_font = FontManager::loadFont("default", "myfont.ttf");
 
@@ -27,8 +27,9 @@ void InitProgram() {
 
     sf::Texture* worldTexture = TextureManager::loadTexture("world", "world.png");
     sf::Sprite* worldSprite = new sf::Sprite(*worldTexture);
+    worldSprite->setScale({0.7f, 0.7f});
 
-    worldSprite->setPosition({WIN_WIDTH/2, WIN_HEIGHT/2});
+    worldSprite->setPosition({BASE_WIN_WIDTH/2, BASE_WIN_HEIGHT/2});
     sf::FloatRect bounds = worldSprite->getLocalBounds();
     worldSprite->setOrigin({bounds.size.x / 2.f, bounds.size.y / 2.f});
 
@@ -46,6 +47,9 @@ void RenderProgram(sf::RenderWindow& window)
     // clear the window with black color
     window.clear(sf::Color::Black);
 
+    // sf::FloatRect visibleArea({0.f, 0.f}, sf::Vector2f({5000, 5000}));
+    // window.setView(sf::View(visibleArea));
+
     // == Program Loop ==>
     if (CURR_PROGRAM_STATE == ProgramState::MENU) 
     {
@@ -55,6 +59,10 @@ void RenderProgram(sf::RenderWindow& window)
     {
         CURR_MODULE->render(window);
     }
+
+    sf::Texture* backgroundTexture = TextureManager::loadTexture("test_texture", "dvd.png");
+    sf::Sprite testSprite(*backgroundTexture);
+    window.draw(testSprite);
 
     // end the current frame
     window.display();
@@ -75,27 +83,27 @@ void UpdateProgram(sf::RenderWindow& window, float deltaTime)
  
     // Pass event callbacks
     window.handleEvents(
-        [&](const sf::Event::Closed& closed) { 
+        [&window](const sf::Event::Closed& closed) { 
             onClose(window, closed); 
         },
-        [&](const sf::Event::KeyPressed keyPressed) {
+        [&window](const sf::Event::KeyPressed keyPressed) {
             onKeyPressed(window, keyPressed);
         },
-        [&](const sf::Event::KeyReleased keyReleased) {
+        [&window](const sf::Event::KeyReleased keyReleased) {
             onKeyReleased(window, keyReleased);
         },
-        [&](const sf::Event::MouseWheelScrolled mouseWheelScrolled) {
+        [&window](const sf::Event::MouseWheelScrolled mouseWheelScrolled) {
             onMouseWheelScrolled(window, mouseWheelScrolled);
         },
-        [&](const sf::Event::MouseButtonPressed mouseButtonPressed) {
+        [&window](const sf::Event::MouseButtonPressed mouseButtonPressed) {
             onMouseButtonPressed(window, mouseButtonPressed);
         },
-        [&](const sf::Event::MouseMoved mouseMoved) {
+        [&window](const sf::Event::MouseMoved mouseMoved) {
             onMouseMoved(window, mouseMoved);
         },
-        [&](const sf::Event::Resized resized) {
+        [&window](const sf::Event::Resized resized) {
             onResized(window, resized);
-        } 
+        }
     );
 }
 
@@ -124,8 +132,5 @@ void ProgramLoop(sf::RenderWindow& window)
 
         // Target frame time calculation
         deltaTime = clock() - currentTime;
-
-        std::cout<<"CTIME: " <<currentTime<<std::endl<<"DTIME: "<<deltaTime<<std::endl;
-        // std::cout<<"dtime: " <<dtime<<std::endl<<"cdtime: "<<cdtime<<std::endl;
     }
 };

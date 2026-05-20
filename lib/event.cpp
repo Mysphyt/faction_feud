@@ -16,7 +16,12 @@ const void onResized (sf::RenderWindow& window, const sf::Event::Resized& resize
 
     // update the view to the new size of the window
     sf::FloatRect visibleArea({0.f, 0.f}, sf::Vector2f(resized.size));
-    window.setView(sf::View(visibleArea));
+
+    window.close();
+
+    window.create(sf::VideoMode({visibleArea.size.x, visibleArea.size.y}), "window");
+
+    window.setView(sf::View(sf::FloatRect({0.f, 0.f}, {BASE_WIN_WIDTH, BASE_WIN_HEIGHT})));
 };
 
 const void onKeyPressed (sf::RenderWindow &window, const sf::Event::KeyPressed& keyPressed)
@@ -97,6 +102,7 @@ const void onMouseMoved (sf::RenderWindow &window, const sf::Event::MouseMoved& 
 {
     // Debug("new mouse x: "+std::to_string(mouseMoved.position.x));
     // Debug("new mouse y: "+std::to_string(mouseMoved.position.y));   
+    sf::Vector2f mouseViewPos = window.mapPixelToCoords(mouseMoved.position);
 
-    CheckMouseCollisions(MENUS.top(), mouseMoved.position.x, mouseMoved.position.y);
+    CheckMouseCollisions(MENUS.top(), mouseViewPos.x, mouseViewPos.y);
 };

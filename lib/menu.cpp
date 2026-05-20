@@ -48,7 +48,7 @@ VOID BounceBackgroundTextureRect(Menu& menu, const std::string& backgroundName)
  
     backgroundSprite->setTextureRect(sf::IntRect(
         {textureRect.position.x + menuMoveVectors[menu.name].x, textureRect.position.y + menuMoveVectors[menu.name].y},
-        {WIN_WIDTH, WIN_HEIGHT}
+        {BASE_WIN_WIDTH, BASE_WIN_HEIGHT}
     ));
 }
 
@@ -284,7 +284,7 @@ Menu LoadMenu(const std::filesystem::path& filePath)
 
     sf::RectangleShape backgroundRect({0,0});
 
-    backgroundRect.setSize({WIN_WIDTH, WIN_HEIGHT});
+    backgroundRect.setSize({BASE_WIN_WIDTH, BASE_WIN_HEIGHT});
 
     backgroundRect.setFillColor(menuColor);
 
@@ -298,8 +298,8 @@ Menu LoadMenu(const std::filesystem::path& filePath)
     sf::Vector2u backgroundTextureSize = backgroundTexture->getSize();
 
     // Scale the background texture to the current resolution
-    float scaleX = static_cast<float>(WIN_WIDTH) / backgroundTextureSize.x;
-    float scaleY = static_cast<float>(WIN_HEIGHT) / backgroundTextureSize.y;
+    float scaleX = static_cast<float>(BASE_WIN_WIDTH) / backgroundTextureSize.x;
+    float scaleY = static_cast<float>(BASE_WIN_HEIGHT) / backgroundTextureSize.y;
 
     backgroundSprite->setScale({scaleX, scaleY});    
 

@@ -21,8 +21,8 @@ DvDLogo::DvDLogo(const std::string& moduleName) : Module(moduleName)
     sf::Vector2u crtTextureSize = crtTexture->getSize();
 
     // Scale the crt texture to the current resolution
-    float scaleX = static_cast<float>(WIN_WIDTH) / crtTextureSize.x;
-    float scaleY = static_cast<float>(WIN_HEIGHT) / crtTextureSize.y;
+    float scaleX = static_cast<float>(BASE_WIN_WIDTH) / crtTextureSize.x;
+    float scaleY = static_cast<float>(BASE_WIN_HEIGHT) / crtTextureSize.y;
 
     crtSprite->setScale({scaleX, scaleY});    
 
@@ -38,10 +38,10 @@ void DvDLogo::update(sf::RenderWindow& window, float DeltaTime)
     sf::Vector2f spritePosition = dvdLogoSprite->getPosition();
     sf::Vector2f newSpritePosition = {spritePosition.x + logoVelocity.x, spritePosition.y + logoVelocity.y};
     
-    if (newSpritePosition.x < 0 || (newSpritePosition.x + spriteBounds.size.x) >= WIN_WIDTH) { 
+    if (newSpritePosition.x < 0 || (newSpritePosition.x + spriteBounds.size.x) >= BASE_WIN_WIDTH) { 
         logoVelocity.x *= -1;
     }
-    if (newSpritePosition.y < 0 || (newSpritePosition.y + spriteBounds.size.y) >= WIN_HEIGHT) { 
+    if (newSpritePosition.y < 0 || (newSpritePosition.y + spriteBounds.size.y) >= BASE_WIN_HEIGHT) { 
         logoVelocity.y *= -1;
     }
 
